@@ -29,16 +29,22 @@ namespace Rest
         Get,
         Post,
         Put,
-        Delete
+        Delete,
+        none
     }
 
+    /// <summary>
+    /// В архитекуре присутсвует возможность сериализации в xml, но не реализована -> use json only
+    /// </summary>
     public enum RequestResponseType
     {
         Json,
         Xml
     }
 
-
+    /// <summary>
+    /// Для использования данного класса, приложение должно стартовать с правами администратора
+    /// </summary>
     public class ServiceContainer
     {
         HttpListener listener = new HttpListener();
@@ -230,7 +236,7 @@ namespace Rest
                     }
                     Dictionary<string, object> param = new Dictionary<string, object>();
                     foreach (var item in context.Request.QueryString.AllKeys)
-                        param.Add(item, context.Request.QueryString[item]);
+                        param.Add(item.Trim(), context.Request.QueryString[item].Trim());
                     var node = tree.Find(path, httpMethod, param);
                     if (node != null && node.Method != null)
                         InvokeWrapper(context, param, node);

@@ -21,7 +21,7 @@ namespace Rest
         }
 
 
-        public static UriTree Parse(string uriTemplate, HttpMethod httpMethod = HttpMethod.Get, System.Reflection.MethodInfo methodInfo = null)
+        public static UriTree Parse(string uriTemplate, HttpMethod httpMethod = HttpMethod.none, System.Reflection.MethodInfo methodInfo = null)
         {
             UriTree res = new UriTree();
             var nodesStr = uriTemplate.Contains("?")
@@ -33,7 +33,7 @@ namespace Rest
             res.treeNodes.Add(firstNode);
             for (int i = 1; i < nodesStr.Length; i++)
             {
-                UriTreeNode node = new UriTreeNode();
+                UriTreeNode node = new UriTreeNode() { HttpMethod = HttpMethod.none };
                 if (nodesStr[i][0] == '{' && nodesStr[i][nodesStr[i].Length - 1] == '}')
                 {
                     node.IsParam = true;

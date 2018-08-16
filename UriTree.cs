@@ -38,7 +38,9 @@ namespace Rest
             {
                 while (i < path.Length)
                 {
-                    node = cur.Find(x => ((!x.IsParam && x.Name == path[i]) || (x.IsParam)) && (x.Method != null ? x.HttpMethod == httpMethod : true));
+                    node = cur.Find(x => ((!x.IsParam && x.Name == path[i]) || (x.IsParam)) 
+                    && (x.Method != null ? x.HttpMethod == httpMethod : x.Method == null 
+                    && (x.HttpMethod == HttpMethod.none || x.HttpMethod == httpMethod)));
                     if (node != null)
                     {
                         if (node.IsParam)
@@ -60,7 +62,7 @@ namespace Rest
             foreach (var item in treeNodes1)
             {
                 var node = treeNodes2.FirstOrDefault(x => x.Name == item.Name && item.HttpMethod == x.HttpMethod);
-                if (node == null )
+                if (node == null)
                     treeNodes2.Add(item);
                 else if (node != null && node.Method == null && item.treeNodesChild.Count == 0 && item.Method != null)
                 {
